@@ -4,6 +4,7 @@ var last_id = read_id();
 var data = [];
 // console.log(last_id.last_index);
 const forms = document.querySelectorAll('.needs-validation');
+let scroll_t = document.getElementById("btn-back-to-top");
 
 
 function save_to_file() {
@@ -71,6 +72,12 @@ function addRow(name, surname, city, age, class_type, housed, money){
   save_id(); 
   data.push(dataObj);
   displayData();
+}
+
+function addRow_generate(name, surname, city, age, class_type, housed, money){
+  const dataObj = new record(name, surname, city, age, class_type, housed, money);
+  last_id.last_index += 1;
+  data.push(dataObj);
 }
 
 function displayData(){
@@ -153,9 +160,10 @@ function generate() {
       money = true;
     } else { money = false; }
     
-    addRow(capitalize(name), capitalize(surname), capitalize(city), age, capitalize(class_type), housed, money);
-
+    addRow_generate(capitalize(name), capitalize(surname), capitalize(city), age, capitalize(class_type), housed, money);
   }
+  save_id();
+  displayData();
 }
 
 function delete_row() {
@@ -168,3 +176,19 @@ function delete_row() {
     }
   }
 }
+
+
+window.onscroll = () => {
+  scrollFunction();
+};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 350 || document.documentElement.scrollTop > 350) scroll_t.style.display = "block"; 
+  else scroll_t.style.display = "none";
+}
+
+function backToTop() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+scroll_t.addEventListener("click", backToTop);
