@@ -76,7 +76,14 @@
         <button type="button" class="btn btn-danger btn-space" data-bs-toggle="modal" data-bs-target="#delete_modal">Usuń wybraną pozycję</button>
         <button type="button" class="btn btn-secondary btn-space" onclick="save_to_file()">Zapisz do relację do pliku</button>
         <button type="button" class="btn btn-secondary btn-space" onclick="read_from_file()">Wczytaj relację z pliku</button>
-        <button type="button" class="btn btn-primary btn-space" data-bs-toggle="modal" data-bs-target="#generate_modal">Wygeneruj</button>      
+        <button type="button" class="btn btn-primary btn-space" data-bs-toggle="modal" data-bs-target="#generate_modal">Wygeneruj</button>
+        <button type="button" class="btn btn-danger btn-space" data-bs-toggle="modal" data-bs-target="#delete-n_modal">Usuń n'ty</button>
+        <button type="button" class="btn btn-warning btn-space" data-bs-toggle="modal" data-bs-target="#search-linear_modal">Wyszukiwanie liniowe</button>
+        <button type="button" class="btn btn-warning btn-space" data-bs-toggle="modal" data-bs-target="#search-binary_modal">Wyszukiwanie binarne</button>
+        <button type="button" class="btn btn-warning btn-space" data-bs-toggle="modal" data-bs-target="#search-chain_modal">Wyszukiwanie łańcuchowo</button> 
+        <button type="button" class="btn btn-secondary btn-space" onclick="swap_chain_main()">Pokaż łańcuchy/Dane</button>         
+
+
     </div>
 
     <!-- generate popup start -->
@@ -122,6 +129,232 @@
         </div>
     </div>
     <!-- delete popup end -->
+
+    <!-- delete-n popup start -->
+    <div class="modal fade" id="delete-n_modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="delete-n_modalLabel">Podaj n</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                <input type="number" id="delete-n_id"/>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                    <button type="button" class="btn btn-primary" onclick="delete_n()" data-bs-dismiss="modal">Usuń</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- delete-n popup end -->
+
+    <!-- search linear popup start -->
+    <div class="modal fade" id="search-linear_modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="search-linear_modalLabel">Wybierz kolumnę, po której chcesz wyszukać rekordy</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="mb-2 col-4">
+                            <select id="user_first_select" onchange="swap_search(true)">
+                                <option value="id">Id</option>
+                                <option value="name">Imię</option>
+                                <option value="surname">Nazwisko</option>
+                                <option value="city">Miasto</option>
+                                <option value="class_type">Kierunek</option>
+                                <option value="age">Wiek</option>
+                                <option value="housed">Czy w akademiku?</option>
+                                <option value="money">Czy pobiera stypendium?</option>
+                            </select>
+
+                            <div class="col">
+                                <input id="def_search">
+                                <div id="radio_search">
+                                    <input type="radio" name="bool_search" value=true />
+                                    <p>Tak</p>
+                                    <input type="radio"  name="bool_search" value=false />
+                                    <p>Nie</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-2 col-4">
+                            <select id="user_second_select" onchange="swap_search(false)">
+                                <option value="id">Id</option>
+                                <option value="name">Imię</option>
+                                <option value="surname">Nazwisko</option>
+                                <option value="city">Miasto</option>
+                                <option value="class_type">Kierunek</option>
+                                <option value="age">Wiek</option>
+                                <option value="housed">Czy w akademiku?</option>
+                                <option value="money">Czy pobiera stypendium?</option>
+                            </select>
+
+                            
+                            <input id="def_search_2">
+                            <div id="radio_search_2">
+                                <input type="radio" name="bool_search_2" value=true />
+                                <p>Tak</p>
+                                <input type="radio"  name="bool_search_2" value=false />
+                                <p>Nie</p>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <button type="button" class="btn btn-warning" onclick="linear_search()">Szukaj liniowo</button>
+                        </div>
+                    </div>
+
+                    <table class="table table-striped text-center">
+                        <thead>
+                            <tr>
+                                <th>Indeks</th>
+                                <th>Imię</th>
+                                <th>Nazwisko</th>
+                                <th>Wiek</th>
+                                <th>Miasto</th>
+                                <th>Kierunek</th>
+                                <th>Akademik</th>
+                                <th>Stypendium</th>
+                            </tr>
+                        </thead>
+                        <tbody id="search_table">
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-danger btn-floating btn-lg" id="btn-back-to-top" style="border-radius: 15px;">
+                        <i class='fas fa-chevron-up'></i>
+                    </button>  
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- search linear popup end -->
+
+    <!-- search binary popup start -->
+    <div class="modal fade" id="search-binary_modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="search-binary_modalLabel">Wybierz kolumnę, po której chcesz wyszukać rekordy</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="mb-2 col-4">
+                            <select id="user_first_select_binary" onchange="swap_search_binary()">
+                                <option value="id">Id</option>
+                                <option value="name">Imię</option>
+                                <option value="surname">Nazwisko</option>
+                                <option value="city">Miasto</option>
+                                <option value="class_type">Kierunek</option>
+                                <option value="age">Wiek</option>
+                                <option value="housed">Czy w akademiku?</option>
+                                <option value="money">Czy pobiera stypendium?</option>
+                            </select>
+
+                            <div class="col">
+                                <input id="def_search_binary">
+                                <div id="radio_search_binary">
+                                    <input type="radio" name="bool_search_binary" value=true />
+                                    <p>Tak</p>
+                                    <input type="radio"  name="bool_search_binary" value=false />
+                                    <p>Nie</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <button type="button" class="btn btn-warning" onclick="pre_binary_search()">Szukaj binarnie</button>
+                        </div>
+                    </div>
+
+                    <table class="table table-striped text-center">
+                        <thead>
+                            <tr>
+                                <th>Indeks</th>
+                                <th>Imię</th>
+                                <th>Nazwisko</th>
+                                <th>Wiek</th>
+                                <th>Miasto</th>
+                                <th>Kierunek</th>
+                                <th>Akademik</th>
+                                <th>Stypendium</th>
+                            </tr>
+                        </thead>
+                        <tbody id="search_table_binary">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- search binary popup end -->
+
+     <!-- search chain popup start -->
+     <div class="modal fade" id="search-chain_modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="search-chain_modalLabel">Wpisz imię</h6>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="mb-3 col-4">
+                                <input id="search_chain" />
+                        </div>
+
+                        <div class="col">
+                            <button type="button" class="btn btn-warning" onclick="display_chain()">Szukaj łańcuchowo</button>
+                            <button type="button" class="btn btn-warning" onclick="swap_chain()">Zamień</button>
+
+                        </div>
+                    </div>
+
+                    <table class="table table-striped text-center">
+                        <thead>
+                            <tr>
+                                <th>Indeks</th>
+                                <th>Imię</th>
+                                <th>Nazwisko</th>
+                                <th>Wiek</th>
+                                <th>Miasto</th>
+                                <th>Kierunek</th>
+                                <th>Akademik</th>
+                                <th>Stypendium</th>
+                            </tr>
+                        </thead>
+                        <tbody id="search_table_chain">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- search chain popup end -->
 
 
     <!-- back to top button start -->
